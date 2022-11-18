@@ -13,6 +13,7 @@ const Explaination = styled.p`
 const Result = styled.p`
   font-size: 3em;
   color: black;
+  margin-bottom: 0;
 `;
 const Additional = styled.p`
   font-size: 2em;
@@ -22,6 +23,10 @@ const Additional = styled.p`
 const AdditionalImg = styled.img`
   width: 270px;
   border-radius: 10px;
+`;
+
+const Mbti = styled.p`
+  font-size: 1.5em;
 `;
 
 export default function Show() {
@@ -47,6 +52,7 @@ export default function Show() {
       <AdditionalImg src={explaination.img} alt="영웅 사진" />
       <Explaination>{explaination.text}</Explaination>
       <Result>{explaination.name}</Result>
+      <Mbti>{result}</Mbti>
       <Additional>"{explaination.voice}"</Additional>
       <OrangeButton
         text="Restart"
