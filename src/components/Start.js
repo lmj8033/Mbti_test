@@ -53,34 +53,6 @@ export default function Start() {
     return initData;
   }
 
-  async function sqlFetchData() {
-    const resCount = await fetch('http://localhost:3001/data/count');
-    if (resCount.status === 200) {
-      const num = await resCount.json();
-      if (num[0].counts !== 0) setCounts(num[0].counts);
-    } else {
-      throw new Error('통신 이상');
-    }
-
-    const resSurvey = await fetch('http://localhost:3001/data/survey');
-    if (resSurvey.status === 200) {
-      const surveyData = await resSurvey.json();
-      console.log(surveyData);
-      const resExplaination = await fetch(
-        'http://localhost:3001/data/explaination'
-      );
-      if (resExplaination.status === 200) {
-        const explainationData = await resExplaination.json();
-        const data = makeData(surveyData, explainationData);
-        dispatch(init(data));
-      } else {
-        throw new Error('통신 이상');
-      }
-    } else {
-      throw new Error('통신 이상');
-    }
-  }
-
   async function mongoFetchData() {
     const resMongoCount = await fetch('http://localhost:4000/mongo/counts');
     if (resMongoCount.status === 200) {
@@ -102,7 +74,6 @@ export default function Start() {
   }
 
   useEffect(() => {
-    // sqlFetchData();
     mongoFetchData();
   }, []);
   return (
