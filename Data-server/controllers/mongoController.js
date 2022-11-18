@@ -1,48 +1,7 @@
-// 선택지에 따른 성향 분석하기
-// 해당 결과를 저장하고 마지막에 저장 된 결과를 출력해 주기
+const mongoClient = require('../mongoConnect');
 
-// 상태: myq 결과
-// 액션: 선택에 따른 myq 결정하기
+const _client = mongoClient.connect();
 
-//액션 타입 (문자열)
-const INIT = 'myq/INIT';
-const CHECK = 'myq/CHECK';
-const NEXT = 'myq/NEXT';
-const RESET = 'myq/RESET';
-
-//액션 생성 함수
-//payload => 선택에 따른 결과 값 result 전달 필요
-export function init(data) {
-  return {
-    type: INIT,
-    payload: data,
-  };
-}
-export function check(result) {
-  return {
-    type: CHECK,
-    payload: { result },
-  };
-}
-
-export function next() {
-  return {
-    type: NEXT,
-  };
-}
-
-export function reset() {
-  return {
-    type: RESET,
-  };
-}
-
-// const initStateEmpty = {
-//   myqResult: '',
-//   page: 0,
-//   survey: [],
-//   explaination: {},
-// };
 // 초기 상태 설정
 const initState = {
   myqResult: '',
@@ -114,7 +73,7 @@ const initState = {
       ],
     },
     {
-      question: '경기가 끝날 쯤 제일 못하던 팀원이 나한테 정치를 시작한다',
+      question: '경기가 끝날 쯤 제일 못하던 사람이 나한테 정치지를 시작한다',
       answer: [
         {
           text: '맞서 싸운다',
@@ -241,33 +200,40 @@ const initState = {
   },
 };
 
-//리듀서
+const mongoDB = {
+  getCounts: async () => {
+    const client = await _client;
+    const db = client.db('myq').collection('counts');
+    const data = await db.find({}).toArray();
+    console.log(data);
+    return data;
+  },
+  incCounts: async () => {
+    const client = await _client;
+    const db = client.db('myq').collection('counts');
+    const result = await db.updateOne({ id: 1 }, { $inc: { counts: +1 } });
+    if (result.acknowledged) {
+      return '업데이트 성공';
+    } else {
+      throw new Error('통신 이상');
+    }
+  },
+  setData: async () => {
+    const client = await _client;
+    const db = client.db('myq').collection('data');
+    const result = await db.insertOne(initState);
+    if (result.acknowledged) {
+      return '업데이트 성공';
+    } else {
+      throw new Error('통신 이상');
+    }
+  },
+  getData: async () => {
+    const client = await _client;
+    const db = client.db('myq').collection('data');
+    const data = await db.find({}).toArray();
+    return data;
+  },
+};
 
-export default function myq(state = initState, action) {
-  switch (action.type) {
-    case INIT:
-      return {
-        ...state,
-        survey: action.payload.survey,
-        explaination: action.payload.explaination,
-      };
-    case CHECK:
-      return {
-        ...state,
-        myqResult: state.myqResult + action.payload.result,
-      };
-    case NEXT:
-      return {
-        ...state,
-        page: state.page + 1,
-      };
-    case RESET:
-      return {
-        ...state,
-        page: 0,
-        myqResult: '',
-      };
-    default:
-      return state;
-  }
-}
+module.exports = mongoDB;

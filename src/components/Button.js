@@ -9,7 +9,7 @@ const MyButton = styled.a`
   text-decoration: none;
   line-height: 1.6em;
   font-size: 1.4em;
-  padding: 1.25em 5em;
+  padding: 1.25em 2em;
   background-color: ${(props) => props.mainColor};
   /* border: 2px solid ${(props) => props.subColor}; */
   border-radius: 0.75em;

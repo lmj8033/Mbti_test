@@ -29,6 +29,18 @@ export default function Show() {
   const explaination = useSelector((state) => state.myq.explaination[result]);
   const dispatch = useDispatch();
 
+  //count 증가
+  const incCounts = async () => {
+    const resInc = await fetch('http://localhost:4000/mongo/inccount', {
+      method: 'POST',
+    });
+    if (resInc.status === 200) {
+      const incNum = await resInc.json();
+    } else {
+      throw new Error('통신이상');
+    }
+  };
+
   return (
     <>
       <Header>나와 닮은 오버워치 영웅은?</Header>
@@ -39,6 +51,7 @@ export default function Show() {
       <OrangeButton
         text="Restart"
         clickEvent={() => {
+          incCounts();
           dispatch(reset());
         }}
       />
