@@ -54,7 +54,7 @@ export default function Start() {
   }
 
   async function mongoFetchData() {
-    const resMongoCount = await fetch('http://localhost:4000/mongo/counts');
+    const resMongoCount = await fetch('http://13.209.69.227:4000/mongo/counts');
     if (resMongoCount.status === 200) {
       const num = await resMongoCount.json();
       console.log(num);
@@ -62,7 +62,7 @@ export default function Start() {
     } else {
       throw new Error('통신 이상');
     }
-    const resMongoData = await fetch('http://localhost:4000/mongo/getdata');
+    const resMongoData = await fetch('http://13.209.69.227:4000/mongo/getdata');
     if (resMongoData.status === 200) {
       const data = await resMongoData.json();
       if (data[0].survey.length !== 0) {

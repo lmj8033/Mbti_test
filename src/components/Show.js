@@ -31,7 +31,7 @@ export default function Show() {
 
   //count 증가
   const incCounts = async () => {
-    const resInc = await fetch('http://localhost:4000/mongo/inccount', {
+    const resInc = await fetch('http://13.209.69.227:4000/mongo/inccount', {
       method: 'POST',
     });
     if (resInc.status === 200) {
