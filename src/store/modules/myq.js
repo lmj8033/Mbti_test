@@ -190,7 +190,7 @@ const initState = {
     },
     ENTP: {
       name: '솜브라',
-      text: '지적 도전을 즐기는 영리하고 호기심이 많아요!',
+      text: '지적 도전을 즐기며 영리하고 호기심이 많아요!',
       img: '/images/entp.png',
       voice: '무엇이든, 누구든\n해킹할 수 있어.',
     },
